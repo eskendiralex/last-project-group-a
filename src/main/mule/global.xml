@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd">
+    <db:config name="Database_Config" doc:name="Database Config" doc:id="56397dbe-cdcd-4db2-8d96-f3c7b73674ba">
+        <db:my-sql-connection host="${secure::database.host}" port="${secure::database.port}" user="${secure::database.user}" password="${secure::database.password}" database="project" />
+    </db:config>
+    <http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="44daeb7e-fcda-49fa-bfd5-546685aa50aa">
+        <http:listener-connection host="${secure::http.host}" port="${secure::http.port}" />
+    </http:listener-config>
+    <apikit:config name="note_api-config" api="resource::4f17bcac-b0a2-4e0e-b234-cda941f80bb0:note_api:1.0.7:raml:zip:note_api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="69a5fcce-673e-42e8-88bb-dd22fde82d0b" file="${env}.yaml" key="1234567890123456">
+        <secure-properties:encrypt algorithm="Blowfish" />
+    </secure-properties:config>
+    <global-property doc:name="Global Property" doc:id="16a4a97a-d000-4b63-8916-f40a8b9de76a" name="env" value="dev" />
+    <api-gateway:autodiscovery apiId="19986683" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="c6ac50a0-8718-4071-a99c-71a7c1a89f8f" flowRef="note_api-main" />
+</mule>
